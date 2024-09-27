@@ -12,28 +12,39 @@ local discover_packet = table.concat({
 })
 
 M.setup = function()
+	--
+end
+
+function M.discover()
 	local uv = vim.uv
+	-- local timer = uv.new_timer()
+	-- timer:start(1000, 0, function()
+	-- 	print("done")
+	-- 	timer:close()
+	-- end)
+	-- print("sleeping")
+
 	local udp_send_handle = uv.new_udp()
 	udp_send_handle:send(discover_packet, "239.255.255.250", 1400, function(err)
 		if err ~= nil then
 			print(err)
 		end
-		-- vim.notify("sending")
+		udp_send_handle:close()
+		-- print("sent")
+		vim.notify("sending")
 	end)
-	local udp_receive_handle = uv.new_udp()
-	udp_receive_handle:bind("0.0.0.0", 1400)
-	udp_receive_handle:recv_start(function(err)
-		assert(not err, err)
-		udp_receive_handle:recv_start(function(err, data, add, flags)
-			assert(not err, err)
-			print(data)
-		end)
-	end)
-end
 
-function M.discover()
-	--
-	print("hello")
+	-- local udp_receive_handle = uv.new_udp()
+	-- udp_receive_handle:bind("0.0.0.0", 1400)
+	-- udp_receive_handle:recv_start(function(err)
+	-- 	assert(not err, err)
+	-- 	udp_receive_handle:recv_start(function(err, data, add, flags)
+	-- 		assert(not err, err)
+	-- 		print(data)
+	-- 	end)
+	-- end)
+
+	uv.run()
 end
 
 return M
