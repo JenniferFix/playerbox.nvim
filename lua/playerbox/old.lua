@@ -21,14 +21,14 @@ end
 
 ---@param opts PlayerBoxOptions
 function PlayerBox:setup(opts)
-	self._discover()
+	self.discover()
 end
 
 function PlayerBox:show_list()
 	--
 end
 
-PlayerBox._discover = function()
+PlayerBox.discover = function()
 	local udp = socket.udp()
 
 	local discover_packet = table.concat({
@@ -54,10 +54,11 @@ PlayerBox._discover = function()
 		return 1
 	end
 
+	print(discover_response)
 	-- if we don't have the ip in the table add the new device
-	if not PlayerBox.devices[ip] then
-		PlayerBox.devices[ip] = sonos.new({ hostname = ip })
-	end
+	-- if not PlayerBox.devices[ip] then
+	-- 	PlayerBox.devices[ip] = sonos.new({ hostname = ip })
+	-- end
 
 	return PlayerBox.devices[ip]
 end
@@ -68,8 +69,8 @@ end
 PlayerBox.info = function() end
 PlayerBox.playpause = function() end
 
-local device = PlayerBox._discover()
-local err = device.Play()
+local device = PlayerBox.discover()
+-- local err = device.Play()
 
 --[[
 lua require("playertest").

@@ -25,9 +25,12 @@ function M.discover()
 	-- print("sleeping")
 
 	local udp_send_handle = uv.new_udp()
-	udp_send_handle:send(discover_packet, "239.255.255.250", 1400, function(err)
+	-- udp_send_handle:bind("0.0.0.0", 13377)
+	-- udp_send_handle:set_broadcast(true)
+	udp_send_handle:send(discover_packet, "239.255.255.250", 1900, function(err)
 		if err ~= nil then
 			print(err)
+			return
 		end
 		udp_send_handle:close()
 		-- print("sent")
@@ -44,7 +47,7 @@ function M.discover()
 	-- 	end)
 	-- end)
 
-	uv.run()
+	-- uv.run()
 end
 
 return M
