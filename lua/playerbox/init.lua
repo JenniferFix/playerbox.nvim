@@ -17,37 +17,28 @@ end
 
 function M.discover()
 	local uv = vim.uv
-	-- local timer = uv.new_timer()
-	-- timer:start(1000, 0, function()
-	-- 	print("done")
-	-- 	timer:close()
-	-- end)
-	-- print("sleeping")
 
 	local udp_send_handle = uv.new_udp()
-	-- udp_send_handle:bind("0.0.0.0", 13377)
-	-- udp_send_handle:set_broadcast(true)
+
 	udp_send_handle:send(discover_packet, "239.255.255.250", 1900, function(err)
 		if err ~= nil then
 			print(err)
 			return
 		end
-		udp_send_handle:close()
-		-- print("sent")
-		vim.notify("sending")
+		vim.notify("Sending discovery")
+		-- udp_send_handle:bind("0.0.0.0", 1900)
+
+		udp_send_handle:recv_start(function(err, data, addr, flags)
+			if err ~= nil then
+				print(err)
+				return
+			end
+			-- assert(not err, err)
+			vim.notify(addr.ip .. ":" .. addr.port)
+			vim.notify(data)
+			udp_send_handle:close()
+		end)
 	end)
-
-	-- local udp_receive_handle = uv.new_udp()
-	-- udp_receive_handle:bind("0.0.0.0", 1400)
-	-- udp_receive_handle:recv_start(function(err)
-	-- 	assert(not err, err)
-	-- 	udp_receive_handle:recv_start(function(err, data, add, flags)
-	-- 		assert(not err, err)
-	-- 		print(data)
-	-- 	end)
-	-- end)
-
-	-- uv.run()
 end
 
 return M
