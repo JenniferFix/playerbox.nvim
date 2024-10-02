@@ -1,3 +1,5 @@
+local Sonos = require("playerbox.sonos")
+local curl = require("playerbox.curl")
 local M = {}
 
 local discover_packet = table.concat({
@@ -25,7 +27,7 @@ function M.discover()
 			print(err)
 			return
 		end
-		vim.notify("Sending discovery")
+		-- vim.notify("Sending discovery")
 		-- udp_send_handle:bind("0.0.0.0", 1900)
 
 		udp_send_handle:recv_start(function(err, data, addr, flags)
@@ -34,11 +36,21 @@ function M.discover()
 				return
 			end
 			-- assert(not err, err)
-			vim.notify(addr.ip .. ":" .. addr.port)
-			vim.notify(data)
+			local i = string.find(data, "Sonos")
+			if i > 0 then
+				print("Found Sonos device")
+				M.active_device = Sonos:new({ hostname = addr.ip })
+			end
+			-- vim.notify(addr.ip .. ":" .. addr.port)
+
 			udp_send_handle:close()
+			-- need to verify it's a proper device and then set a new activedevice
 		end)
 	end)
+end
+
+function M.go()
+	curl.go()
 end
 
 return M

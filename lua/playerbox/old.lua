@@ -60,7 +60,7 @@ PlayerBox.discover = function()
 	-- 	PlayerBox.devices[ip] = sonos.new({ hostname = ip })
 	-- end
 
-	return PlayerBox.devices[ip]
+	return PlayerBox.devices
 end
 -- M.setup = function(opts)
 -- 	print("Options:", opts)
