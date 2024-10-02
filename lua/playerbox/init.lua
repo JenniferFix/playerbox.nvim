@@ -51,6 +51,7 @@ end
 
 function M.go()
 	curl.go()
+	-- print(active_device)
 end
 
 return M

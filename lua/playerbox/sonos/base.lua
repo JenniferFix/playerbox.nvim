@@ -1,15 +1,6 @@
-local client = {}
+local BaseService = {}
 
--- local found_curl, curl = pcall(require, "cURL.safe")
-
-local function finished(stuff)
-	-- vim.notify("all done calling curl")
-	-- print(vim.inspect(stuff))
-	print(stuff.stderr)
-	print(stuff.stdout)
-end
-
-function client.go()
+function BaseService.request()
 	-- print(found_curl)
 	local curl_cmd = { "curl", "https://cat-fact.herokuapp.com/facts" }
 	local opts = {
@@ -21,4 +12,4 @@ function client.go()
 	-- vim.notify(vim.inspect(e))
 end
 
-return client
+return BaseService
